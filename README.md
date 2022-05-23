@@ -131,5 +131,5 @@ this.channel.bind("client-message", (msg) => {
       })
 ````
 
-
+### If you have any other problems you can refer pusher official documents : https://pusher.com/docs/channels/
 
