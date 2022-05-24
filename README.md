@@ -43,7 +43,7 @@ cluster = "YOUR_APP_CLUSTER"
 ````
 const pusher = new Pusher("d0214c65a7403acf0b27", {
         cluster: "ap2",
-        authEndpoint: `http://localhost:5000/pusher/auth/${this.username}`
+        authEndpoint: `http://localhost:5000/pusher/auth/${this.username}`    //create an endpoint for auth 
         })
         
  this.channel = pusher.subscribe(`presence-${this.room}`);
@@ -52,15 +52,15 @@ const pusher = new Pusher("d0214c65a7403acf0b27", {
 #### Server-side
 ##### Create a post request endpoint in node js:
 ````
-app.post("/pusher/auth/:username", function (req, res) {
-      const socketId = req.body.socket_id
-      const channel = req.body.channel_name
+app.post("/pusher/auth/:username", function (req, res) {  //same endpoint as declared in auth endpoint on client side
+      const socketId = req.body.socket_id     //provided automatically by system
+      const channel = req.body.channel_name   //provided automatically bypusher
       const presenceData = {
-        user_id: socketId + req.params.username,
+        user_id: socketId + req.params.username,   //You can have any unique id on your own
         user_info: { name: req.params.username},
       }
-      const authResponse = pusher.authorizeChannel(socketId, channel, presenceData);
-      console.log('server auth', authResponse)
+      const authResponse = pusher.authorizeChannel(socketId, channel, presenceData);  //presence data is required for presence channel 
+      console.log('server auth', authResponse)                                        //in private channel we can exclude presence data
       res.send(authResponse);
     })
 ````
